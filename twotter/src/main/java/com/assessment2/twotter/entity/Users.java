@@ -1,6 +1,5 @@
 package com.assessment2.twotter.entity;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.assessment2.twotter.dto.ProfileDto;
-
 @Entity
 public class Users {
 	
@@ -22,10 +19,10 @@ public class Users {
 	
 	@Embedded
 	private Profiles profile;
-	private Timestamp joined;
+	private long joined;
 	
-	@Embedded
-	private Credentials cred;
+//	@Embedded
+//	private Credentials cred = new Credentials();
 	
 	@OneToMany(mappedBy = "author")
 	private List<Tweet> tweets = new ArrayList<Tweet>();
@@ -37,16 +34,20 @@ public class Users {
 	private List<Users>youFollow = new ArrayList<Users>();
 	private boolean deleted;
 
-	public Users(Integer id, Timestamp joined, Profiles profile, Credentials cred, List<Tweet>tweets, List<Users> f1, List<Users>f2) {
+	public Users(Integer id, long joined, Profiles profile, Credentials cred, List<Tweet>tweets, List<Users> f1, List<Users>f2) {
 		this.id = id;
 		this.profile = profile;
 		this.joined = joined;
-		this.cred = cred;
+//		this.cred = cred;
 		this.tweets = tweets;
 		this.followedBy = f1;
 		this.youFollow = f2;
 	}
 	
+	public Users() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -55,29 +56,29 @@ public class Users {
 		this.id = id;
 	}
 
-//	public Profile getProfile() {
-//		return profile;
-//	}
-//
-//	public void setProfile(Profile profile) {
-//		this.profile = profile;
-//	}
+	public Profiles getProfile() {
+		return profile;
+	}
 
-	public Timestamp getJoined() {
+	public void setProfile(Profiles profile) {
+		this.profile = profile;
+	}
+
+	public Long getJoined() {
 		return joined;
 	}
 
-	public void setJoined(Timestamp joined) {
+	public void setJoined(long joined) {
 		this.joined = joined;
 	}
 
-	public Credentials getCred() {
-		return cred;
-	}
-
-	public void setCred(Credentials cred) {
-		this.cred = cred;
-	}
+//	public Credentials getCred() {
+//		return cred;
+//	}
+//
+//	public void setCred(Credentials cred) {
+//		this.cred = cred;
+//	}
 
 	public List<Tweet> getTweets() {
 		return tweets;

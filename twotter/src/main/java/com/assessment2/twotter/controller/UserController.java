@@ -2,6 +2,8 @@ package com.assessment2.twotter.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
+import com.assessment2.twotter.entity.Profiles;
 import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.service.UserService;
 
@@ -19,6 +22,10 @@ import com.assessment2.twotter.service.UserService;
 @RequestMapping("users")
 public class UserController {
 	private UserService userService;
+	
+	public UserController(UserService userService){
+		this.userService = userService;
+	}
 	
 	@GetMapping
 	public List<UserDto> getAllUsers() {
@@ -31,8 +38,8 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public UserDto postNewUser(@RequestBody UserDto user) {
-		return userService.createUser(user);
+	public UserDto postNewUser(@RequestBody Profiles profile) {
+		return userService.createUser(profile);
 	}
 	
 	@PatchMapping("@{username}")

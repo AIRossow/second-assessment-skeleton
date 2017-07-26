@@ -2,7 +2,10 @@ package com.assessment2.twotter.dto;
 
 import java.sql.Timestamp;
 
+import com.assessment2.twotter.entity.Credentials;
+
 public class TweetDto {
+	private Credentials creds;
 	private Integer id;
 //	private UserDto author;
 //	private Timestamp posted;
@@ -33,6 +36,12 @@ public class TweetDto {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public Credentials getCreds() {
+		return creds;
+	}
+	public void setCreds(Credentials creds) {
+		this.creds = creds;
 	}
 	
 }

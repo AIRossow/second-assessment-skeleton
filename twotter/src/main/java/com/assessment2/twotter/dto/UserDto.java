@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class UserDto {
 	private String username;
 	private ProfileDto profile;
-	private Timestamp joined;
+	private Long joined;
 	
 	public String getUsername() {
 		return username;
@@ -19,10 +19,10 @@ public class UserDto {
 	public void setProfile(ProfileDto profile) {
 		this.profile = profile;
 	}
-	public Timestamp getJoined() {
+	public Long getJoined() {
 		return joined;
 	}
-	public void setJoined(Timestamp joined) {
+	public void setJoined(Long joined) {
 		this.joined = joined;
 	}
 }

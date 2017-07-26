@@ -1,6 +1,5 @@
 package com.assessment2.twotter.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
+import com.assessment2.twotter.entity.Profiles;
 import com.assessment2.twotter.entity.Tweet;
 import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.mapper.UserMapper;
@@ -22,19 +22,29 @@ public class UserService {
 	private UserMapper userMap;
 	private UserRepository userRepo;
 
+	public UserService(UserMapper userMap, UserRepository userRepo) {
+		this.userMap = userMap;
+		this.userRepo = userRepo;
+	}
+	
 	public List<UserDto> getAll() {
 		List<Users> results = userRepo.findAll();
 		return results.stream().map(userMap::toDto).collect(Collectors.toList());
 	}
 
 	public UserDto getUser(String username) {
+		System.out.println(username);
 		return userMap.toDto(users.get(username));
 	}
 
 	@Transactional
-	public UserDto createUser(UserDto userDto) {
-		Users user = userMap.fromDto(userDto);
-		userRepo.save(user);
+	public UserDto createUser(Profiles profile) {
+		Users user = new Users();
+		user.setProfile(profile);
+		user.setJoined(System.currentTimeMillis());
+		users.put(profile.getCreds().getUsername(), user);
+		UserDto userDto = userMap.toDto(user);
+		userRepo.saveAndFlush(user);
 		return userDto;
 	}
 
@@ -55,8 +65,9 @@ public class UserService {
 	
 	public void addTweet(UserDto userDto, Tweet tweet) {
 		Users user = userMap.fromDto(userDto);
-		user.addTweet(tweet);
-		userRepo.save(user);
+		System.out.println(user);
+		System.out.println(tweet);
+		users.get(user.getProfile().getCreds().getUsername()).addTweet(tweet);
 	}
 
 }
