@@ -11,29 +11,42 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.springframework.context.annotation.Profile;
-
 import com.assessment2.twotter.dto.ProfileDto;
 
 @Entity
-public class User {
+public class Users {
 	
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private Profile profile;
+	
+	@Embedded
+	private Profiles profile;
 	private Timestamp joined;
 	
 	@Embedded
 	private Credentials cred;
 	
-	@OneToMany(mappedBy = "id")
+	@OneToMany(mappedBy = "author")
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	
+	@ManyToMany(mappedBy = "youFollow")
+	private List<Users>followedBy = new ArrayList<Users>();
+	
 	@ManyToMany
-	private List<Integer>follows = new ArrayList<Integer>();
+	private List<Users>youFollow = new ArrayList<Users>();
 	private boolean deleted;
 
+	public Users(Integer id, Timestamp joined, Profiles profile, Credentials cred, List<Tweet>tweets, List<Users> f1, List<Users>f2) {
+		this.id = id;
+		this.profile = profile;
+		this.joined = joined;
+		this.cred = cred;
+		this.tweets = tweets;
+		this.followedBy = f1;
+		this.youFollow = f2;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -42,13 +55,13 @@ public class User {
 		this.id = id;
 	}
 
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
+//	public Profile getProfile() {
+//		return profile;
+//	}
+//
+//	public void setProfile(Profile profile) {
+//		this.profile = profile;
+//	}
 
 	public Timestamp getJoined() {
 		return joined;
@@ -73,13 +86,17 @@ public class User {
 	public void setTweets(List<Tweet> tweets) {
 		this.tweets = tweets;
 	}
-
-	public List<Integer> getFollows() {
-		return follows;
+	
+	public void addTweet(Tweet tweet) {
+		tweets.add(0, tweet);
 	}
 
-	public void setFollows(List<Integer> follows) {
-		this.follows = follows;
-	}
+//	public List<Integer> getFollows() {
+//		return follows;
+//	}
+//
+//	public void setFollows(List<Integer> follows) {
+//		this.follows = follows;
+//	}
 	
 }

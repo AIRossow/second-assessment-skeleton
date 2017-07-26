@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assessment2.twotter.dto.TweetDto;
+import com.assessment2.twotter.dto.UserDto;
+import com.assessment2.twotter.entity.Credentials;
+import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.service.TweetService;
+import com.assessment2.twotter.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -49,8 +53,8 @@ public class TweetController {
 	
 		@PostMapping
 		@ApiOperation(value = "", nickname = "postNewTweet")
-		public Long post(@RequestBody @Validated TweetDto tweetDto, HttpServletResponse httpResponse) {
-			Long id = tweetService.post(tweetDto);
+		public int post(@Validated Credentials cred, @RequestBody TweetDto tweetDto, HttpServletResponse httpResponse) {
+			int id = tweetService.post(cred, tweetDto);
 			httpResponse.setStatus(HttpServletResponse.SC_CREATED);
 			return id;
 		}

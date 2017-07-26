@@ -15,13 +15,21 @@ public class Tweet {
 	
 	@Id
 	@GeneratedValue
-	@ManyToOne
 	private Integer id;
 	
-	private User author;
+	@ManyToOne
+	private Users author;
 	private Timestamp posted;
-	private TweetDto inReplyTo;
-	private TweetDto repostOf;
+	//private TweetDto inReplyTo;
+	//private TweetDto repostOf;
 	private boolean deleted;
 	private String tag;
+	
+	public Tweet(Integer id, Timestamp posted, boolean deleted, String tag) {
+		this.id = id;
+		this.posted = posted;
+		this.deleted = deleted;
+		this.tag = tag;
+		
+	}
 }

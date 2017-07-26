@@ -1,11 +1,11 @@
 package com.assessment2.twotter.mapper;
 
 import com.assessment2.twotter.dto.UserDto;
-import com.assessment2.twotter.entity.User;
+import com.assessment2.twotter.entity.Users;
 
 public interface UserMapper {
 
-	UserDto toDto(User user);
+	UserDto toDto(Users user);
 	
-	User fromDto(UserDto dto);
+	Users fromDto(UserDto dto);
 }
