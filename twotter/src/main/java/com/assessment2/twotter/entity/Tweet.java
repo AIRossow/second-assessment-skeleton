@@ -32,7 +32,7 @@ public class Tweet {
 //	@OneToMany//(targetEntity = Hashtag.class, mappedBy = "Hashtag.label")
 //	@JoinColumn(name = "tagId")
 //	private Set<Hashtag> tag;
-	String tag;
+	private String tag;
 	
 	public Tweet() {
 		

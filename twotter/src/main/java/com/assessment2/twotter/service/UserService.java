@@ -129,4 +129,14 @@ public class UserService {
 		return feed.stream().map(tweetMap :: toDto).collect(Collectors.toList());
 	}
 
+	public List<TweetDto> getMentions(String username) {
+		List<Tweet>tweets = tweetRepo.findAll();
+		Iterator<Tweet> iter = tweets.iterator();
+		while(iter.hasNext()) {
+			if(!(iter.next().getContent().contains("@"+username)))
+				iter.remove();			
+		}
+		return tweets.stream().map(tweetMap :: toDto).collect(Collectors.toList());
+	}
+
 }

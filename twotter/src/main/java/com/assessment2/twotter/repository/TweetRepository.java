@@ -11,4 +11,7 @@ public interface TweetRepository extends JpaRepository<Tweet, Integer> {
 
 	List<Tweet> findByAuthor_idIs(Integer tempId);
 
+//	@Query("SELECT id FROM Tweet WHERE POSITION content = ?1 IN content")
+//	List<Tweet> findMentions(String string);
+
 }

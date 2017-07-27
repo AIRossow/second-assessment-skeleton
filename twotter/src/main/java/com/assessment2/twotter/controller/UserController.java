@@ -55,6 +55,11 @@ public class UserController {
 	public List<TweetDto> getUserFeed(@PathVariable String username) {
 		return userService.getUserFeed(username);
 	}
+	
+	@GetMapping("@{username}/mentions")
+	public List<TweetDto> getMentions(@PathVariable String username) {
+		return userService.getMentions(username);
+	}
 
 	@PostMapping
 	public UserDto postNewUser(@RequestBody Profiles profile) {

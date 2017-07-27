@@ -2,10 +2,15 @@ package com.assessment2.twotter.dto;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Embedded;
+
 import com.assessment2.twotter.entity.Credentials;
 
 public class TweetDto {
+	@Embedded
 	private Credentials creds;
+	
+	private String username;
 	private Integer id;
 //	private UserDto author;
 	private Long posted;
@@ -48,6 +53,12 @@ public class TweetDto {
 	}
 	public void setRepostOf(TweetDto repostOf) {
 		this.repostOf = repostOf;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }
