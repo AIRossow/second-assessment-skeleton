@@ -1,11 +1,15 @@
 package com.assessment2.twotter.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -20,13 +24,15 @@ public class Tweet {
 	private Users author;
 	private Long posted;
 	private String content;
-	
 //	@ManyToOne
 //	private Users
 	//private TweetDto inReplyTo;
 	//private Tweet repostOf;
 	private boolean deleted;
-	private String tag;
+//	@OneToMany//(targetEntity = Hashtag.class, mappedBy = "Hashtag.label")
+//	@JoinColumn(name = "tagId")
+//	private Set<Hashtag> tag;
+	String tag;
 	
 	public Tweet() {
 		

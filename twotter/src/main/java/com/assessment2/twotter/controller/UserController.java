@@ -40,6 +40,11 @@ public class UserController {
 	public List<TweetDto> getUserTweets(@PathVariable String username) {
 		return userService.getUserTweets(username);
 	}
+
+	@GetMapping("@{username}/followers")
+	public List<UserDto> getFollowers(@PathVariable String username) {
+		return userService.getFollowers(username);
+	}
 	
 	@PostMapping
 	public UserDto postNewUser(@RequestBody Profiles profile) {

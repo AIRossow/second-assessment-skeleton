@@ -26,7 +26,7 @@ public class UserService {
 	private UserRepository userRepo;
 	private TweetMapper tweetMap;
 	private TweetRepository tweetRepo;
-
+	
 	public UserService(UserMapper userMap, UserRepository userRepo, TweetRepository tweetRepo, TweetMapper tweetMap) {
 		this.userMap = userMap;
 		this.userRepo = userRepo;
@@ -34,6 +34,10 @@ public class UserService {
 		this.tweetMap = tweetMap;
 	}
 	
+	public boolean checkCred(Credentials cred) {
+		//return userRepo.checkCred(cred.getUsername(), cred.getPassword());
+		return false;
+	}
 	public List<UserDto> getAll() {
 		List<Users> results = userRepo.findAll();
 		return results.stream().map(userMap::toDto).collect(Collectors.toList());
@@ -97,6 +101,13 @@ public class UserService {
 		Users user = userRepo.getOne(tempId);
 		user.setDeleted(true);
 		userRepo.save(user);
+	}
+
+	public List<UserDto> getFollowers(String username) {
+		Integer tempId = userRepo.findByUser(username);
+		Users user = userRepo.getOne(tempId);
+		List<Users> followers = user.getFollowedBy();
+		return followers.stream().map(userMap::toDto).collect(Collectors.toList());
 	}
 
 }

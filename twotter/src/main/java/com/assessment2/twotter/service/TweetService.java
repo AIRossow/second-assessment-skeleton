@@ -68,15 +68,6 @@ public class TweetService {
 		tweetDto.setCreds(cred);
 		tweetDto.setContent(repost.getContent());
 		return post(tweetDto);
-//		TweetDto repost = getById(id);
-//		Users user = userMap.fromDto(userService.getUser(repost.getCreds().getUsername()));
-//		repost.setCreds(cred);
-//		repost.setRepostOf(repost);
-//		Tweet tweet = tweetMap.fromDto(repost);
-//		tweet.setAuthor(user);
-//		tweet.setPosted(System.currentTimeMillis());
-//		tweetRepo.save(tweet);
-//		return repost;
 	}
 
 }
