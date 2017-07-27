@@ -16,14 +16,17 @@ import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
 import com.assessment2.twotter.entity.Profiles;
 import com.assessment2.twotter.service.UserService;
+import com.assessment2.twotter.service.ValidateService;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
 	private UserService userService;
+	private ValidateService valServ;
 	
-	public UserController(UserService userService){
+	public UserController(UserService userService, ValidateService valServ){
 		this.userService = userService;
+		this.valServ = valServ;
 	}
 	
 	@GetMapping
@@ -63,7 +66,11 @@ public class UserController {
 
 	@PostMapping
 	public UserDto postNewUser(@RequestBody Profiles profile) {
-		return userService.createUser(profile);
+		if(valServ.userAvailable(profile.getCreds().getUsername()))
+			return userService.createUser(profile);
+		
+		else
+			return null;
 	}
 	
 	@PatchMapping("@{username}")

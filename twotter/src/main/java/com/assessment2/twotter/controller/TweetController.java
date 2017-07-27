@@ -46,12 +46,6 @@ public class TweetController {
 			return tweetService.getById(id);
 		}
 	
-		@RequestMapping(method = RequestMethod.HEAD, value = "{id}")
-		@ApiOperation(value = "", nickname = "projectManagerExistsForId")
-		public void has(@PathVariable Long id, HttpServletResponse httpResponse) {
-	
-		}
-	
 		@PostMapping
 		@ApiOperation(value = "", nickname = "postNewTweet")
 		public TweetDto post(@RequestBody TweetDto tweetDto, HttpServletResponse httpResponse) {
