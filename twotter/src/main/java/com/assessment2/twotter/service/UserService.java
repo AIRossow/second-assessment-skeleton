@@ -12,7 +12,9 @@ import com.assessment2.twotter.dto.TweetDto;
 import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
 import com.assessment2.twotter.entity.Profiles;
+import com.assessment2.twotter.entity.Tweet;
 import com.assessment2.twotter.entity.Users;
+import com.assessment2.twotter.mapper.TweetMapper;
 import com.assessment2.twotter.mapper.UserMapper;
 import com.assessment2.twotter.repository.TweetRepository;
 import com.assessment2.twotter.repository.UserRepository;
@@ -22,11 +24,14 @@ public class UserService {
 	private Map<String, Users> users = new HashMap<String, Users>();
 	private UserMapper userMap;
 	private UserRepository userRepo;
+	private TweetMapper tweetMap;
 	private TweetRepository tweetRepo;
 
-	public UserService(UserMapper userMap, UserRepository userRepo) {
+	public UserService(UserMapper userMap, UserRepository userRepo, TweetRepository tweetRepo, TweetMapper tweetMap) {
 		this.userMap = userMap;
 		this.userRepo = userRepo;
+		this.tweetRepo = tweetRepo;
+		this.tweetMap = tweetMap;
 	}
 	
 	public List<UserDto> getAll() {
@@ -70,8 +75,8 @@ public class UserService {
 
 	public List<TweetDto> getUserTweets(String username) {
 		Integer tempId = userRepo.findByUser(username);
-		System.out.println(tempId);
-		return tweetRepo.findByauthor_id(tempId);
+		List<Tweet> results = tweetRepo.findByAuthor_idIs(tempId);
+		return results.stream().map(tweetMap::toDto).collect(Collectors.toList());
 	}
 
 	public void delete(String username) {
