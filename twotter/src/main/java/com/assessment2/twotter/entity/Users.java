@@ -104,6 +104,24 @@ public class Users {
 		this.deleted = deleted;
 	}
 
+	public void addFollower(Users follower){
+		followedBy.add(follower);
+	}
+	
+	public void addFallowedUser(Users userToFollow) {
+		youFollow.add(userToFollow);
+		
+	}
+	
+	public void removeFallowedUser(Users userToUnfollow) {
+		youFollow.remove(userToUnfollow);
+		
+	}
+
+	public void removeFollower(Users userUnfollowing) {
+		followedBy.remove(userUnfollowing);
+		
+	}
 //	public List<Integer> getFollows() {
 //		return follows;
 //	}

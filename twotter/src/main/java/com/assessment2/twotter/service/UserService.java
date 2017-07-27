@@ -64,13 +64,26 @@ public class UserService {
 	}
 
 	public void follow(Credentials cred, String username) {
-		// TODO Auto-generated method stub
+		Integer tempId = userRepo.findByUser(username);
+		Integer tempId2 = userRepo.findByUser(cred.getUsername());
+		Users userToFollow = userRepo.getOne(tempId);
+		Users userFollower = userRepo.getOne(tempId2);
+		userToFollow.addFollower(userFollower);
+		userFollower.addFallowedUser(userToFollow);
+		userRepo.save(userToFollow);
+		userRepo.save(userFollower);
 		
 	}
 
 	public void unfollow(Credentials cred, String username) {
-		// TODO Auto-generated method stub
-		
+		Integer tempId = userRepo.findByUser(username);
+		Integer tempId2 = userRepo.findByUser(cred.getUsername());
+		Users userToUnfollow = userRepo.getOne(tempId);
+		Users userUnfollowing = userRepo.getOne(tempId2);
+		userToUnfollow.removeFollower(userUnfollowing);
+		userUnfollowing.removeFallowedUser(userToUnfollow);
+		userRepo.save(userToUnfollow);
+		userRepo.save(userUnfollowing);
 	}
 
 	public List<TweetDto> getUserTweets(String username) {
