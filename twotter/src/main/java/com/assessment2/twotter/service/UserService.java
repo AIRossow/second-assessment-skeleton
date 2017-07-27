@@ -8,12 +8,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.assessment2.twotter.dto.TweetDto;
 import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
 import com.assessment2.twotter.entity.Profiles;
-import com.assessment2.twotter.entity.Tweet;
 import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.mapper.UserMapper;
+import com.assessment2.twotter.repository.TweetRepository;
 import com.assessment2.twotter.repository.UserRepository;
 
 @Service
@@ -21,6 +22,7 @@ public class UserService {
 	private Map<String, Users> users = new HashMap<String, Users>();
 	private UserMapper userMap;
 	private UserRepository userRepo;
+	private TweetRepository tweetRepo;
 
 	public UserService(UserMapper userMap, UserRepository userRepo) {
 		this.userMap = userMap;
@@ -48,9 +50,12 @@ public class UserService {
 		return userDto;
 	}
 
-	public UserDto update(UserDto user) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserDto update(Profiles profile) {
+		Integer tempId = userRepo.findByUser(profile.getCreds().getUsername());
+		Users user = userRepo.getOne(tempId);
+		user.setProfile(profile);
+		userRepo.save(user);
+		return userMap.toDto(user);
 	}
 
 	public void follow(Credentials cred, String username) {
@@ -62,12 +67,18 @@ public class UserService {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void addTweet(UserDto userDto, Tweet tweet) {
-		Users user = userMap.fromDto(userDto);
-		System.out.println(user);
-		System.out.println(tweet);
-		users.get(user.getProfile().getCreds().getUsername()).addTweet(tweet);
+
+	public List<TweetDto> getUserTweets(String username) {
+		Integer tempId = userRepo.findByUser(username);
+		System.out.println(tempId);
+		return tweetRepo.findByauthor_id(tempId);
+	}
+
+	public void delete(String username) {
+		Integer tempId = userRepo.findByUser(username);
+		Users user = userRepo.getOne(tempId);
+		user.setDeleted(true);
+		userRepo.save(user);
 	}
 
 }

@@ -80,6 +80,30 @@ public class Users {
 		tweets.add(0, tweet);
 	}
 
+	public List<Users> getFollowedBy() {
+		return followedBy;
+	}
+
+	public void setFollowedBy(List<Users> followedBy) {
+		this.followedBy = followedBy;
+	}
+
+	public List<Users> getYouFollow() {
+		return youFollow;
+	}
+
+	public void setYouFollow(List<Users> youFollow) {
+		this.youFollow = youFollow;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 //	public List<Integer> getFollows() {
 //		return follows;
 //	}

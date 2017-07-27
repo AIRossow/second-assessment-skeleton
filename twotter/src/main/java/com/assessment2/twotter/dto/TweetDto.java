@@ -8,10 +8,10 @@ public class TweetDto {
 	private Credentials creds;
 	private Integer id;
 //	private UserDto author;
-//	private Timestamp posted;
+	private Long posted;
 	private String content;
 	//private TweetDto inReplyTo;
-	//private TweetDto repostOf;
+	private TweetDto repostOf;
 	
 	public Integer getId() {
 		return id;
@@ -25,12 +25,12 @@ public class TweetDto {
 //	public void setAuthor(UserDto author) {
 //		this.author = author;
 //	}
-//	public Timestamp getPosted() {
-//		return posted;
-//	}
-//	public void setPosted(Timestamp posted) {
-//		this.posted = posted;
-//	}
+	public Long getPosted() {
+		return posted;
+	}
+	public void setPosted(Long posted) {
+		this.posted = posted;
+	}
 	public String getContent() {
 		return content;
 	}
@@ -42,6 +42,12 @@ public class TweetDto {
 	}
 	public void setCreds(Credentials creds) {
 		this.creds = creds;
+	}
+	public TweetDto getRepostOf() {
+		return repostOf;
+	}
+	public void setRepostOf(TweetDto repostOf) {
+		this.repostOf = repostOf;
 	}
 	
 }

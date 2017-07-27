@@ -39,6 +39,12 @@ public class TweetController {
 		public List<TweetDto> getAll() {
 			return tweetService.getAll();
 		}
+		
+		@GetMapping("{id}")
+		@ApiOperation(value = "", nickname = "getTweetById")
+		public TweetDto getById(@PathVariable Integer id) {
+			return tweetService.getById(id);
+		}
 	
 		@RequestMapping(method = RequestMethod.HEAD, value = "{id}")
 		@ApiOperation(value = "", nickname = "projectManagerExistsForId")
@@ -46,29 +52,22 @@ public class TweetController {
 	
 		}
 	
-//		@GetMapping("{id}")
-//		@ApiOperation(value = "", nickname = "getProjectManagerById")
-//		public ProjectManagerDto get(@PathVariable Long id) {
-//			
-//		}
-	
 		@PostMapping
 		@ApiOperation(value = "", nickname = "postNewTweet")
-		public int post(@RequestBody TweetDto tweetDto, HttpServletResponse httpResponse) {
-			int id = tweetService.post(tweetDto);
+		public TweetDto post(@RequestBody TweetDto tweetDto, HttpServletResponse httpResponse) {
 			httpResponse.setStatus(HttpServletResponse.SC_CREATED);
-			return id;
-		}
-		
-		@PutMapping("{id}")
-		@ApiOperation(value = "", nickname = "putProjectManagerWithId")
-		public void put(@PathVariable Long id, @RequestBody @Validated TweetDto tweetDto, HttpServletResponse httpResponse) {
-			tweetService.put(id, tweetDto);
+			return tweetService.post(tweetDto);
 		}
 		
 		@DeleteMapping("{id}")
 		@ApiOperation(value = "", nickname = "deleteProjectManagerAtId")
-		public void delete(@PathVariable Long id, HttpServletResponse httpResponse) {
+		public void delete(@PathVariable Integer id, HttpServletResponse httpResponse) {
 			tweetService.delete(id);
+		}
+		
+		@PostMapping("{id}/repost")
+		@ApiOperation(value = "", nickname = "repostTweet")
+		public TweetDto repost(@PathVariable Integer id, @RequestBody Credentials cred) {
+			return tweetService.repost(id, cred);
 		}
 	}

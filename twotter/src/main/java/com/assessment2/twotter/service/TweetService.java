@@ -1,6 +1,7 @@
 package com.assessment2.twotter.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.assessment2.twotter.mapper.UserMapper;
 import com.assessment2.twotter.dto.TweetDto;
-import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
-import com.assessment2.twotter.entity.Profiles;
 import com.assessment2.twotter.entity.Tweet;
 import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.service.UserService;
@@ -35,30 +34,49 @@ public class TweetService {
 	}
 	
 	public List<TweetDto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Tweet> results = tweetRepo.findAll();
+		return results.stream().map(tweetMap::toDto).collect(Collectors.toList());
 	}
 
 	@Transactional
-	public int post(TweetDto tweetDto) {
+	public TweetDto post(TweetDto tweetDto) {
 		Tweet tweet = tweetMap.fromDto(tweetDto);
 		Users user = userMap.fromDto(userService.getUser(tweetDto.getCreds().getUsername()));
 		tweet.setAuthor(user);
 		tweet.setContent(tweetDto.getContent());
-		System.out.println(user.getId());
-		//userService.addTweet(user, tweetMap.fromDto(tweetDto));
+		tweet.setPosted(System.currentTimeMillis());
 		tweetRepo.save(tweet);
-		return tweetDto.getId();
+		return tweetDto;
 	}
 
-	public void put(Long id, TweetDto tweetDto) {
-		// TODO Auto-generated method stub
+
+	public void delete(Integer id) {
+		Tweet tweet = tweetRepo.getOne(id);
+		tweet.setDeleted(true);
+		tweetRepo.save(tweet);
 		
 	}
 
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
+	public TweetDto getById(Integer id) {
+		return tweetMap.toDto(tweetRepo.getOne(id));
+	}
+
+	public TweetDto repost(Integer id, Credentials cred) {
+		TweetDto tweetDto = new TweetDto();
+		TweetDto repost = getById(id);
+		tweetDto.setRepostOf(repost);
+		tweetDto.setCreds(cred);
+		tweetDto.setContent(repost.getContent());
+		return post(tweetDto);
+//		TweetDto repost = getById(id);
+//		Users user = userMap.fromDto(userService.getUser(repost.getCreds().getUsername()));
+//		repost.setCreds(cred);
+//		repost.setRepostOf(repost);
+//		Tweet tweet = tweetMap.fromDto(repost);
+//		tweet.setAuthor(user);
+//		tweet.setPosted(System.currentTimeMillis());
+//		tweetRepo.save(tweet);
+//		return repost;
 	}
 
 }

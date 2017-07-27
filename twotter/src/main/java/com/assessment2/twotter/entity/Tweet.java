@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Tweet {
@@ -15,12 +16,15 @@ public class Tweet {
 	@GeneratedValue
 	private Integer id;
 	
-	@ManyToOne//(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private Users author;
 	private Long posted;
 	private String content;
+	
+//	@ManyToOne
+//	private Users
 	//private TweetDto inReplyTo;
-	//private TweetDto repostOf;
+	//private Tweet repostOf;
 	private boolean deleted;
 	private String tag;
 	
@@ -84,4 +88,12 @@ public class Tweet {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+//	public Tweet getRepostOf() {
+//		return repostOf;
+//	}
+//
+//	public void setRepostOf(Tweet repostOf) {
+//		this.repostOf = repostOf;
+//	}
 }
