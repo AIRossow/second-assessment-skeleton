@@ -3,6 +3,7 @@ package com.assessment2.twotter.dto;
 import java.sql.Timestamp;
 
 public class UserDto {
+	private Integer id;
 	private String username;
 	private ProfileDto profile;
 	private Long joined;
@@ -24,5 +25,11 @@ public class UserDto {
 	}
 	public void setJoined(Long joined) {
 		this.joined = joined;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

@@ -6,5 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.assessment2.twotter.entity.Users;
 
 public interface UserRepository extends JpaRepository<Users, Integer> {
+
+	@Query("SELECT id FROM Users WHERE username = ?1")
+	Integer findByUser(String usernameToFind);
 	
 }

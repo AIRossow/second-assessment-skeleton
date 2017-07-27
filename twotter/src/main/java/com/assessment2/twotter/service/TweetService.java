@@ -45,7 +45,7 @@ public class TweetService {
 		Users user = userMap.fromDto(userService.getUser(tweetDto.getCreds().getUsername()));
 		tweet.setAuthor(user);
 		tweet.setContent(tweetDto.getContent());
-		System.out.println(tweetDto.getContent());
+		System.out.println(user.getId());
 		//userService.addTweet(user, tweetMap.fromDto(tweetDto));
 		tweetRepo.save(tweet);
 		return tweetDto.getId();

@@ -2,13 +2,11 @@ package com.assessment2.twotter.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.assessment2.twotter.dto.TweetDto;
-import com.assessment2.twotter.dto.UserDto;
 
 @Entity
 public class Tweet {
@@ -17,7 +15,7 @@ public class Tweet {
 	@GeneratedValue
 	private Integer id;
 	
-	@ManyToOne
+	@ManyToOne//(cascade = CascadeType.PERSIST)
 	private Users author;
 	private Long posted;
 	private String content;

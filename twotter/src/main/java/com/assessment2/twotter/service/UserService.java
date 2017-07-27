@@ -33,8 +33,8 @@ public class UserService {
 	}
 
 	public UserDto getUser(String username) {
-		System.out.println(username);
-		return userMap.toDto(users.get(username));
+		Integer tempId = userRepo.findByUser(username);
+		return userMap.toDto(userRepo.getOne(tempId));
 	}
 
 	@Transactional

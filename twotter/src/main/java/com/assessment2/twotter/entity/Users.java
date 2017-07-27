@@ -3,6 +3,7 @@ package com.assessment2.twotter.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,10 +22,7 @@ public class Users {
 	private Profiles profile;
 	private long joined;
 	
-//	@Embedded
-//	private Credentials cred = new Credentials();
-	
-	@OneToMany(mappedBy = "author")
+	@OneToMany(mappedBy = "author", orphanRemoval = true)
 	private List<Tweet> tweets = new ArrayList<Tweet>();
 	
 	@ManyToMany(mappedBy = "youFollow")
@@ -34,11 +32,9 @@ public class Users {
 	private List<Users>youFollow = new ArrayList<Users>();
 	private boolean deleted;
 
-	public Users(Integer id, long joined, Profiles profile, Credentials cred, List<Tweet>tweets, List<Users> f1, List<Users>f2) {
-		this.id = id;
+	public Users(long joined, Profiles profile, Credentials cred, List<Tweet>tweets, List<Users> f1, List<Users>f2) {
 		this.profile = profile;
 		this.joined = joined;
-//		this.cred = cred;
 		this.tweets = tweets;
 		this.followedBy = f1;
 		this.youFollow = f2;
@@ -71,14 +67,6 @@ public class Users {
 	public void setJoined(long joined) {
 		this.joined = joined;
 	}
-
-//	public Credentials getCred() {
-//		return cred;
-//	}
-//
-//	public void setCred(Credentials cred) {
-//		this.cred = cred;
-//	}
 
 	public List<Tweet> getTweets() {
 		return tweets;
