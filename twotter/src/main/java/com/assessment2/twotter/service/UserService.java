@@ -1,6 +1,7 @@
 package com.assessment2.twotter.service;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,8 +36,7 @@ public class UserService {
 	}
 	
 	public boolean checkCred(Credentials cred) {
-		//return userRepo.checkCred(cred.getUsername(), cred.getPassword());
-		return false;
+		return (userRepo.checkCred(cred.getUsername(), cred.getPassword()) != null);
 	}
 	public List<UserDto> getAll() {
 		List<Users> results = userRepo.findAll();
@@ -115,6 +115,18 @@ public class UserService {
 		Users user = userRepo.getOne(tempId);
 		List<Users> following = user.getYouFollow();
 		return following.stream().map(userMap::toDto).collect(Collectors.toList());
+	}
+
+	public List<TweetDto> getUserFeed(String username) {
+		Integer tempId = userRepo.findByUser(username);
+		Users user = userRepo.getOne(tempId);
+		List<Tweet> feed = user.getTweets();
+		List<Users> following = user.getYouFollow();
+		Iterator<Users> iter = following.iterator();
+		while(iter.hasNext()) {
+			feed.addAll(iter.next().getTweets());
+		}
+		return feed.stream().map(tweetMap :: toDto).collect(Collectors.toList());
 	}
 
 }

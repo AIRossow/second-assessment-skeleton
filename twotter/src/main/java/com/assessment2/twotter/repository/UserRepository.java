@@ -13,7 +13,8 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 	@Query("SELECT id FROM Users WHERE username = ?1")
 	Integer findByUser(String usernameToFind);
 
-	//boolean checkCred(String username, String password);
+	@Query("SELECT id FROM Users WHERE username = ?1 AND password = ?2")
+	Integer checkCred(String username, String password);
 
 	@Query("SELECT id FROM Users WHERE username = ?1 AND deleted = false")
 	Integer findExists(String username);
