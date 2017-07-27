@@ -110,4 +110,11 @@ public class UserService {
 		return followers.stream().map(userMap::toDto).collect(Collectors.toList());
 	}
 
+	public List<UserDto> getFollowing(String username) {
+		Integer tempId = userRepo.findByUser(username);
+		Users user = userRepo.getOne(tempId);
+		List<Users> following = user.getYouFollow();
+		return following.stream().map(userMap::toDto).collect(Collectors.toList());
+	}
+
 }

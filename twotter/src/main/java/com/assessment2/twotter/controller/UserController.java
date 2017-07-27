@@ -46,6 +46,11 @@ public class UserController {
 		return userService.getFollowers(username);
 	}
 	
+	@GetMapping("@{username}/following")
+	public List<UserDto> getFollowing(@PathVariable String username) {
+		return userService.getFollowing(username);
+	}
+	
 	@PostMapping
 	public UserDto postNewUser(@RequestBody Profiles profile) {
 		return userService.createUser(profile);
