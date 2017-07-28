@@ -3,22 +3,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assessment2.twotter.dto.TweetDto;
-import com.assessment2.twotter.dto.UserDto;
 import com.assessment2.twotter.entity.Credentials;
-import com.assessment2.twotter.entity.Profiles;
-import com.assessment2.twotter.entity.Users;
 import com.assessment2.twotter.service.TweetService;
 import com.assessment2.twotter.service.UserService;
 
@@ -29,9 +23,11 @@ import io.swagger.annotations.ApiOperation;
 public class TweetController {
 
 		private TweetService tweetService;
+		private UserService userService;
 	
-		public TweetController(TweetService tweetService) {
+		public TweetController(TweetService tweetService, UserService userService) {
 			this.tweetService = tweetService;
+			this.userService = userService;
 		}
 		
 		@GetMapping
@@ -49,8 +45,12 @@ public class TweetController {
 		@PostMapping
 		@ApiOperation(value = "", nickname = "postNewTweet")
 		public TweetDto post(@RequestBody TweetDto tweetDto, HttpServletResponse httpResponse) {
-			httpResponse.setStatus(HttpServletResponse.SC_CREATED);
-			return tweetService.post(tweetDto);
+			if(userService.checkCred(tweetDto.getCreds()))
+				return tweetService.post(tweetDto);
+			else {
+			    httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			    return null;
+			}
 		}
 		
 		@DeleteMapping("{id}")

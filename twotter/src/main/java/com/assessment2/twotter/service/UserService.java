@@ -39,7 +39,7 @@ public class UserService {
 		return (userRepo.checkCred(cred.getUsername(), cred.getPassword()) != null);
 	}
 	public List<UserDto> getAll() {
-		List<Users> results = userRepo.findAll();
+		List<Users> results = userRepo.findByDeletedFalse();
 		return results.stream().map(userMap::toDto).collect(Collectors.toList());
 	}
 
@@ -137,6 +137,17 @@ public class UserService {
 				iter.remove();			
 		}
 		return tweets.stream().map(tweetMap :: toDto).collect(Collectors.toList());
+	}
+
+	public UserDto activateUser(Profiles profile) {
+		if(userRepo.checkCred(profile.getCreds().getUsername(), profile.getCreds().getPassword())!= null){
+			Integer tempId = userRepo.findByUser(profile.getCreds().getUsername());
+			Users user = userRepo.getOne(tempId);
+			user.setDeleted(false);
+			userRepo.saveAndFlush(user);
+			return userMap.toDto(user);
+		}
+		return null;
 	}
 
 }

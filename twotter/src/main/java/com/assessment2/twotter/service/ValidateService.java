@@ -17,7 +17,7 @@ public class ValidateService {
 		if(tempId == null)
 			return false;
 		else
-			return !userRepo.getOne(tempId).isDeleted();
+			return true;
 	}
 
 	public boolean userAvailable(String username) {

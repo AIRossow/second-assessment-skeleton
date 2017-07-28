@@ -1,7 +1,5 @@
 package com.assessment2.twotter.dto;
 
-import java.sql.Timestamp;
-
 public class UserDto {
 	private Integer id;
 	private String username;

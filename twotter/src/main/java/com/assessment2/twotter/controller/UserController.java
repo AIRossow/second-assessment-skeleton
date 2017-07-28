@@ -2,6 +2,8 @@ package com.assessment2.twotter.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,64 +37,111 @@ public class UserController {
 	}
 	
 	@GetMapping("@{username}")
-	public UserDto getByUsername(@PathVariable String username ) {
-		return userService.getUser(username);
+	public UserDto getByUsername(@PathVariable String username, HttpServletResponse httpResponse ) {
+		if(valServ.userExists(username))
+			return userService.getUser(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+			
 	}
 	
 	@GetMapping("@{username}/tweets")
-	public List<TweetDto> getUserTweets(@PathVariable String username) {
-		return userService.getUserTweets(username);
+	public List<TweetDto> getUserTweets(@PathVariable String username, HttpServletResponse httpResponse) {
+		if(valServ.userExists(username))
+			return userService.getUserTweets(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 
 	@GetMapping("@{username}/followers")
-	public List<UserDto> getFollowers(@PathVariable String username) {
-		return userService.getFollowers(username);
+	public List<UserDto> getFollowers(@PathVariable String username, HttpServletResponse httpResponse) {
+		if(valServ.userExists(username))
+			return userService.getFollowers(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 	
 	@GetMapping("@{username}/following")
-	public List<UserDto> getFollowing(@PathVariable String username) {
-		return userService.getFollowing(username);
+	public List<UserDto> getFollowing(@PathVariable String username, HttpServletResponse httpResponse) {
+		if(valServ.userExists(username))
+			return userService.getFollowing(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 	
 	@GetMapping("@{username}/feed")
-	public List<TweetDto> getUserFeed(@PathVariable String username) {
-		return userService.getUserFeed(username);
+	public List<TweetDto> getUserFeed(@PathVariable String username, HttpServletResponse httpResponse) {
+		if(valServ.userExists(username))
+			return userService.getUserFeed(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 	
 	@GetMapping("@{username}/mentions")
-	public List<TweetDto> getMentions(@PathVariable String username) {
-		return userService.getMentions(username);
+	public List<TweetDto> getMentions(@PathVariable String username, HttpServletResponse httpResponse) {
+		if(valServ.userExists(username))
+			return userService.getMentions(username);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 
 	@PostMapping
-	public UserDto postNewUser(@RequestBody Profiles profile) {
+	public UserDto postNewUser(@RequestBody Profiles profile, HttpServletResponse httpResponse) {
 		if(valServ.userAvailable(profile.getCreds().getUsername()))
 			return userService.createUser(profile);
 		
-		else
+		if(!valServ.userAvailable(profile.getCreds().getUsername()) && !valServ.userExists(profile.getCreds().getUsername()))
+			return userService.activateUser(profile);
+		
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			return null;
+		}
 	}
 	
 	@PatchMapping("@{username}")
-	public UserDto updateUser(@RequestBody Profiles profile) {
-		return userService.update(profile);
+	public UserDto updateUser(@RequestBody Profiles profile, HttpServletResponse httpResponse) {
+		if(valServ.userExists(profile.getCreds().getUsername()))
+			return userService.update(profile);
+		else {
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
 	}
 	
 	@PostMapping("@{username}/follow")
-	public void followUser(@PathVariable String username, @RequestBody Credentials cred) {
-		if(userService.checkCred(cred))
+	public void followUser(@PathVariable String username, @RequestBody Credentials cred, HttpServletResponse httpResponse) {
+		if(userService.checkCred(cred) && valServ.userExists(username))
 			userService.follow(cred, username); 
+		else
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 	}
 	
 	@PostMapping("@{username}/unfollow")
-	public void unfollowUser(@PathVariable String username, @RequestBody Credentials cred) {
-		if(userService.checkCred(cred))
+	public void unfollowUser(@PathVariable String username, @RequestBody Credentials cred, HttpServletResponse httpResponse) {
+		if(userService.checkCred(cred) && valServ.userExists(username))
 			userService.unfollow(cred, username);
+		else
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 	}
 	
 	@DeleteMapping("@{username}")
-	public void delete(@PathVariable String username, @RequestBody Credentials cred) {
+	public void delete(@PathVariable String username, @RequestBody Credentials cred, HttpServletResponse httpResponse) {
 		if(userService.checkCred(cred))
 			userService.delete(username);
+		else
+			httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 	}
 }

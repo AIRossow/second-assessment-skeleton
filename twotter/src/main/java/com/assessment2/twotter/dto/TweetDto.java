@@ -1,7 +1,5 @@
 package com.assessment2.twotter.dto;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Embedded;
 
 import com.assessment2.twotter.entity.Credentials;
